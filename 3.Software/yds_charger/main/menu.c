@@ -32,7 +32,7 @@
   }
 #define EXIT_MENU_SET exit_flag = 1;
 
-static const char *TAG = "memu";
+static const char* TAG = "memu";
 
 static void oledWifiShowTask(void)
 {
@@ -40,7 +40,7 @@ static void oledWifiShowTask(void)
   tcpip_adapter_ip_info_t ipInfo;
   for (;;)
   {
-    char buf[20] = {0};
+    char buf[20] = { 0 };
     esp_wifi_sta_get_ap_info(&ap);
     tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &ipInfo);
     uint8_t event = u8x8_GetMenuEvent(u8g2_GetU8x8(&u8g2));
@@ -62,28 +62,28 @@ static void oledWifiShowTask(void)
   }
 }
 
-static void oledSmartConfigTask(void){
-    u8g2_ClearBuffer(&u8g2);
-    u8g2_DrawUTF8(&u8g2, 20, 16, "已进入配网模式");
-    u8g2_DrawUTF8(&u8g2, 0, 30, "请使用ESPTouch软件");
-    u8g2_DrawUTF8(&u8g2, 0, 46, "只支持2.4G频段 WIFI");
-    u8g2_DrawUTF8(&u8g2, 0, 62, "配网完成后自动退出");
-    u8g2_SendBuffer(&u8g2);
-    vTaskSuspend(adcTask_handle); //挂起其他任务
-    vTaskSuspend(sw35xxTask_handle);
-    vTaskSuspend(ws28xxTask_handle);
-    vTaskSuspend(lis3dhtask_handle);
-    vTaskDelay(pdMS_TO_TICKS(1000));
-    wifi_init_sta(1);
-    vTaskDelay(pdMS_TO_TICKS(1000));
-    vTaskResume(adcTask_handle);
-    vTaskResume(sw35xxTask_handle);
-    vTaskResume(ws28xxTask_handle);
-    vTaskResume(lis3dhtask_handle);
-    vTaskDelay(pdMS_TO_TICKS(1000));
+static void oledSmartConfigTask(void) {
+  u8g2_ClearBuffer(&u8g2);
+  u8g2_DrawUTF8(&u8g2, 20, 16, "已进入配网模式");
+  u8g2_DrawUTF8(&u8g2, 0, 30, "请使用ESPTouch软件");
+  u8g2_DrawUTF8(&u8g2, 0, 46, "只支持2.4G频段 WIFI");
+  u8g2_DrawUTF8(&u8g2, 0, 62, "配网完成后自动退出");
+  u8g2_SendBuffer(&u8g2);
+  vTaskSuspend(adcTask_handle); //挂起其他任务
+  vTaskSuspend(sw35xxTask_handle);
+  vTaskSuspend(ws28xxTask_handle);
+  vTaskSuspend(lis3dhtask_handle);
+  vTaskDelay(pdMS_TO_TICKS(1000));
+  wifi_init_sta(1);
+  vTaskDelay(pdMS_TO_TICKS(1000));
+  vTaskResume(adcTask_handle);
+  vTaskResume(sw35xxTask_handle);
+  vTaskResume(ws28xxTask_handle);
+  vTaskResume(lis3dhtask_handle);
+  vTaskDelay(pdMS_TO_TICKS(1000));
 }
 
-static void  oledPowerLimitTask(void){
+static void  oledPowerLimitTask(void) {
   uint8_t current_selection = 0;
   current_selection = u8g2_UserInterfaceMessage(&u8g2, "C口功率限制设定", "C1口功率:", "C1口功率:", "更新\n取消");
 }
@@ -92,7 +92,7 @@ static void oledVIShowTask(void)
 {
   for (;;)
   {
-    char buf[20] = {0};
+    char buf[20] = { 0 };
     uint8_t event = u8x8_GetMenuEvent(u8g2_GetU8x8(&u8g2));
     u8g2_ClearBuffer(&u8g2);
     sprintf(buf, "C1口 %d.%03dV %d.%03dA", (sw35xx_c1.OutVol * 6) / 1000, (sw35xx_c1.OutVol * 6) % 1000, (sw35xx_c1.OutCur * 25 / 10) / 1000, (sw35xx_c1.OutCur * 25 / 10) % 1000);
@@ -117,7 +117,7 @@ static void oledVIShowTask(void)
 
 static void oledProtocolShowTask_1(void)
 {
-  char buf[20] = {0};
+  char buf[20] = { 0 };
   u8g2_ClearBuffer(&u8g2);
   u8g2_DrawUTF8(&u8g2, 25, 16, "C1口");
   switch (sw35xx_c1.protocol)
@@ -184,7 +184,7 @@ static void oledProtocolShowTask_1(void)
 
 static void oledProtocolShowTask_2(void)
 {
-  char buf[20] = {0};
+  char buf[20] = { 0 };
   u8g2_ClearBuffer(&u8g2);
   u8g2_DrawUTF8(&u8g2, 25, 16, "C2口");
   switch (sw35xx_c2.protocol)
@@ -320,7 +320,7 @@ static void oledManualOTATask(void)
 {
   uint8_t current_selection = 0;
   current_selection = u8g2_UserInterfaceMessage(&u8g2, "当前: V1.0.0.1", "远端: V1.0.0.2", "有新固件!", "更新\n取消");
-  if(current_selection == 1){
+  if (current_selection == 1) {
     u8g2_ClearBuffer(&u8g2);
     u8g2_DrawUTF8(&u8g2, 15, 16, "设备将会自动更新");
     u8g2_DrawUTF8(&u8g2, 15, 32, "更新完成自动重启");
@@ -332,19 +332,19 @@ static void oledManualOTATask(void)
     vTaskSuspend(lis3dhtask_handle);
     vTaskDelay(pdMS_TO_TICKS(1000));
     ota_set
-    vTaskDelete(NULL);
+      vTaskDelete(NULL);
     //删除任务，等待复位
   }
 }
 
 static void oledAutoOTATask(void)
 {
-  
+
 }
 
 static void oledChargeSurface(void)
 {
-  char buf[20] = {0};
+  char buf[20] = { 0 };
   u8g2_ClearBuffer(&u8g2);
   u8g2_DrawLine(&u8g2, 85, 6, 85, 28);
   u8g2_DrawLine(&u8g2, 84, 6, 84, 28);
@@ -397,10 +397,10 @@ static void oledWeatherSurface(void)
   u8g2_SendBuffer(&u8g2);
 }
 
-static void oledClockSurface(void){
+static void oledClockSurface(void) {
   time_t now;
   struct tm timeinfo;
-  char buf[64] = {0};
+  char buf[64] = { 0 };
 
   u8g2_ClearBuffer(&u8g2);
   u8g2_SetFont(&u8g2, u8g2_font_wqy13_t_gb2312);
@@ -408,15 +408,16 @@ static void oledClockSurface(void){
   u8g2_SetFont(&u8g2, u8g2_font_helvB10_tr);
   time(&now);
   localtime_r(&now, &timeinfo);
-  sprintf(buf,"%02d:%02d:%02d",timeinfo.tm_hour,timeinfo.tm_min,timeinfo.tm_sec);
+  sprintf(buf, "%02d:%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
   u8g2_DrawStr(&u8g2, 0, 32, buf);
-  sprintf(buf,"%d/%d/%d",timeinfo.tm_year,timeinfo.tm_mon,timeinfo.tm_mday);
+  sprintf(buf, "%d/%d/%d", timeinfo.tm_year, timeinfo.tm_mon, timeinfo.tm_mday);
   u8g2_DrawStr(&u8g2, 0, 48, buf);
-  strftime(buf,sizeof(timeinfo),"%c",&timeinfo);
+  strftime(buf, sizeof(timeinfo), "%c", &timeinfo);
   u8g2_DrawStr(&u8g2, 0, 64, buf);
   u8g2_SendBuffer(&u8g2);
 }
-
+uint8_t screenShutdown = 0;
+uint16_t screenTimeOut = 0;
 static void oledSettingSurface(void)
 {
   uint8_t current_selection = 0;
@@ -424,6 +425,7 @@ static void oledSettingSurface(void)
   for (;;)
   {
     u8g2_ClearBuffer(&u8g2);
+
     u8g2_SetFont(&u8g2, u8g2_font_wqy13_t_gb2312);
     u8g2_SetFontRefHeightAll(&u8g2);
     current_selection = u8g2_UserInterfaceSelectionList(&u8g2, "设置", 1, "参数设置\n无线配置\n系统监控\n固件更新\n注册\n关于\n<-返回");
@@ -447,7 +449,7 @@ static void oledSettingSurface(void)
           break;
         case 5:
           EXIT_MENU_SET
-          break;
+            break;
         }
         EXIT_MENU_CHECK
       }
@@ -470,7 +472,7 @@ static void oledSettingSurface(void)
           break;
         case 5:
           EXIT_MENU_SET
-          break;
+            break;
         }
         EXIT_MENU_CHECK
       }
@@ -492,7 +494,7 @@ static void oledSettingSurface(void)
           break;
         case 4:
           EXIT_MENU_SET
-          break;
+            break;
         }
         EXIT_MENU_CHECK
       }
@@ -511,7 +513,7 @@ static void oledSettingSurface(void)
           break;
         case 3:
           EXIT_MENU_SET
-          break;
+            break;
         }
         EXIT_MENU_CHECK
       }
@@ -528,7 +530,7 @@ static void oledSettingSurface(void)
           break;
         case 3:
           EXIT_MENU_SET
-          break;
+            break;
         }
         EXIT_MENU_CHECK
       }
@@ -538,72 +540,84 @@ static void oledSettingSurface(void)
       break;
     case 7:
       EXIT_MENU_SET
-      break;
+        break;
     }
     EXIT_MENU_CHECK
-    vTaskDelay(pdMS_TO_TICKS(50));
+
+      vTaskDelay(pdMS_TO_TICKS(50));
   }
 }
 
-void oledTask(void *pvParameters)
+void oledTask(void* pvParameters)
 {
-  uint8_t Mode = 0; // 0-3分别对应主界面1，主界面2，主界面3，设置姐买你
+  uint8_t Mode = 0; // 0-3分别对应主界面1，主界面2，主界面3，设置界面
   for (;;)
   {
     uint8_t event = u8x8_GetMenuEvent(u8g2_GetU8x8(&u8g2));
-    switch (Mode)
-    {
-    case 0:
-      oledChargeSurface();
-      break;
-    case 1:
-      oledWeatherSurface();
-      break;
-    case 2:
-      oledClockSurface();
-      break;
-    case 3:
-      oledSettingSurface();
-      Mode = 0;
-      break;
+    if (event == U8X8_MSG_GPIO_MENU_SELECT) {
+      screenShutdown = 0;
+      screenTimeOut = 0;
     }
-    if (event == U8X8_MSG_GPIO_MENU_SELECT)
-    {
-      break;
+    if (screenShutdown) {
+      u8g2_ClearBuffer(&u8g2);
+      u8g2_SendBuffer(&u8g2);
     }
-    else if (event == U8X8_MSG_GPIO_MENU_NEXT || event == U8X8_MSG_GPIO_MENU_DOWN)
+    else
     {
-      Mode = (Mode >= 3 ? 3 : Mode + 1);
-    }
-    else if (event == U8X8_MSG_GPIO_MENU_PREV || event == U8X8_MSG_GPIO_MENU_UP)
-    {
-      Mode = (Mode <= 0 ? 0 : Mode - 1);
+      switch (Mode)
+      {
+      case 0:
+        oledChargeSurface();
+        break;
+      case 1:
+        oledWeatherSurface();
+        break;
+      case 2:
+        oledClockSurface();
+        break;
+      case 3:
+        oledSettingSurface();
+        Mode = 0;
+        break;
+      }
+      if (event == U8X8_MSG_GPIO_MENU_SELECT)
+      {
+        break;
+      }
+      else if (event == U8X8_MSG_GPIO_MENU_NEXT || event == U8X8_MSG_GPIO_MENU_DOWN)
+      {
+        Mode = (Mode >= 3 ? 3 : Mode + 1);
+      }
+      else if (event == U8X8_MSG_GPIO_MENU_PREV || event == U8X8_MSG_GPIO_MENU_UP)
+      {
+        Mode = (Mode <= 0 ? 0 : Mode - 1);
+      }
     }
     vTaskDelay(pdMS_TO_TICKS(20));
   }
   vTaskDelete(NULL);
 }
 
-void oledInitMessageTask(uint8_t num,char *state){
-  char buf[25] = {0};
-	u8g2_SetFont(&u8g2, u8g2_font_wqy13_t_gb2312);
-  switch(num){
-    case 1:
-      sprintf(buf,"内部外设初始化...%s",state);
-      u8g2_DrawUTF8(&u8g2, 0, 15, buf);    
-      break;
-    case 2:
-      sprintf(buf,"功率芯片初始化...%s",state);
-      u8g2_DrawUTF8(&u8g2, 0, 31, buf);
-      break;
-    case 3:
-      sprintf(buf,"加速度计初始化...%s",state);
-      u8g2_DrawUTF8(&u8g2, 0, 47, buf);
-      break;
-    case 4:
-      sprintf(buf,"WIFI网络初始化...%s",state);
-      u8g2_DrawUTF8(&u8g2, 0, 63, buf);
-      break;
+void oledInitMessageTask(uint8_t num, char* state) {
+  char buf[25] = { 0 };
+  u8g2_SetFont(&u8g2, u8g2_font_wqy13_t_gb2312);
+  switch (num) {
+  case 1:
+    sprintf(buf, "内部外设初始化...%s", state);
+    u8g2_DrawUTF8(&u8g2, 0, 15, buf);
+    break;
+  case 2:
+    sprintf(buf, "功率芯片初始化...%s", state);
+    u8g2_DrawUTF8(&u8g2, 0, 31, buf);
+    break;
+  case 3:
+    sprintf(buf, "加速度计初始化...%s", state);
+    u8g2_DrawUTF8(&u8g2, 0, 47, buf);
+    break;
+  case 4:
+    sprintf(buf, "WIFI网络初始化...%s", state);
+    u8g2_DrawUTF8(&u8g2, 0, 63, buf);
+    break;
   }
   u8g2_SendBuffer(&u8g2);
 }
