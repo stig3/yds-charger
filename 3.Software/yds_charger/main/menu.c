@@ -547,17 +547,22 @@ static void oledSettingSurface(void)
       vTaskDelay(pdMS_TO_TICKS(50));
   }
 }
-
+static uint8_t lastEvent;
 void oledTask(void* pvParameters)
 {
   uint8_t Mode = 0; // 0-3分别对应主界面1，主界面2，主界面3，设置界面
   for (;;)
   {
     uint8_t event = u8x8_GetMenuEvent(u8g2_GetU8x8(&u8g2));
-    if (event == U8X8_MSG_GPIO_MENU_SELECT) {
+    //if (event == U8X8_MSG_GPIO_MENU_SELECT) {
+    if (lastEvent != event)
+    {
       screenShutdown = 0;
       screenTimeOut = 0;
     }
+    //}
+    lastEvent = event;
+
     if (screenShutdown) {
       u8g2_ClearBuffer(&u8g2);
       u8g2_SendBuffer(&u8g2);
