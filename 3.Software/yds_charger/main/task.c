@@ -70,6 +70,11 @@ void ws28xxTask(void* pvParameters)
         screenShutdown = 1;
       }
     }
+    if (gpio_get_level(GPIO_NUM_8) == 0) {
+      screenShutdown = 0;
+      screenTimeOut = 0;
+    }
+
     if (((sw35xx_c1.OutCur * 25 / 10) > 100)) {
       color = colorMap[sw35xx_c1.protocol];
       red = (color >> 16) & 0xFF;
